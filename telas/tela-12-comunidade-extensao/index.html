@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunidade e Suporte Gratuito · Central OBI UFABC</title>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <script src="../../assets/js/utils.js" defer></script>
+  <style>
+    /* Estilos específicos da Tela 12 (Auditáveis e Acessíveis) */
+    .whatsapp-card {
+      background-color: var(--cor-card);
+      border: 1.5px solid var(--cor-borda);
+      border-radius: var(--raio-borda);
+      padding: 18px 16px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .community-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--tamanho-pequeno);
+      font-weight: 700;
+      color: var(--cor-primaria);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .whatsapp-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--cor-texto-principal);
+      line-height: 1.3;
+    }
+
+    .whatsapp-card-desc {
+      font-size: 0.9rem;
+      color: var(--cor-texto-secundario);
+      line-height: 1.4;
+    }
+
+    /* Botão WhatsApp em Alto Contraste (WCAG AA) */
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 52px;
+      padding: 12px 18px;
+      background-color: #15803d; /* Verde escuro com contraste > 4.5:1 com branco */
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border-radius: var(--raio-botao);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+      text-align: center;
+    }
+
+    .btn-whatsapp:hover {
+      background-color: #166534;
+    }
+
+    .btn-whatsapp svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .trust-badge {
+      font-size: 0.8rem;
+      color: var(--cor-texto-secundario);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    /* Seção de Materiais Gratuitos de Treino */
+    .materials-section {
+      margin-bottom: 24px;
+    }
+
+    .section-header-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--cor-texto-principal);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-header-desc {
+      font-size: 0.875rem;
+      color: var(--cor-texto-secundario);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .materials-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .material-link-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      min-height: var(--alvo-toque-minimo);
+      background-color: var(--cor-card);
+      border: 1.5px solid var(--cor-borda);
+      border-radius: var(--raio-borda);
+      text-decoration: none;
+      color: var(--cor-texto-principal);
+      transition: all 0.15s ease;
+    }
+
+    .material-link-card:hover {
+      border-color: var(--cor-primaria);
+      background-color: var(--cor-primaria-fundo);
+      transform: translateY(-1px);
+    }
+
+    .material-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--raio-botao);
+      background-color: var(--cor-primaria-fundo);
+      color: var(--cor-primaria);
+      border: 1px solid var(--cor-primaria-borda);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .material-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .material-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .material-info strong {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--cor-texto-principal);
+      line-height: 1.3;
+    }
+
+    .material-info span {
+      font-size: 0.8rem;
+      color: var(--cor-texto-secundario);
+      line-height: 1.35;
+    }
+
+    .external-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--cor-texto-secundario);
+      flex-shrink: 0;
+    }
+
+    /* Seção de FAQ Semântica (<details>/<summary>) */
+    .faq-section {
+      margin-bottom: 24px;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-item {
+      background-color: var(--cor-card);
+      border: 1px solid var(--cor-borda);
+      border-radius: var(--raio-borda);
+      overflow: hidden;
+      transition: border-color 0.15s ease;
+    }
+
+    .faq-item[open] {
+      border-color: var(--cor-primaria);
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      min-height: var(--alvo-toque-minimo);
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: var(--cor-texto-principal);
+      cursor: pointer;
+      list-style: none; /* Remove seta padrão em browsers modernos */
+      user-select: none;
+    }
+
+    .faq-question::-webkit-details-marker {
+      display: none; /* Remove seta padrão no Safari/Chrome */
+    }
+
+    .faq-question:hover {
+      background-color: var(--cor-fundo-suave);
+    }
+
+    .faq-question:focus-visible {
+      outline: var(--anel-foco);
+      outline-offset: -2px;
+    }
+
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      color: var(--cor-texto-secundario);
+      transition: transform 0.2s ease;
+    }
+
+    .faq-item[open] .faq-chevron {
+      transform: rotate(180deg);
+      color: var(--cor-primaria);
+    }
+
+    .faq-answer {
+      padding: 0 16px 14px 16px;
+      font-size: 0.875rem;
+      color: var(--cor-texto-secundario);
+      line-height: 1.45;
+      border-top: 1px solid var(--cor-fundo-suave);
+      padding-top: 10px;
+    }
+
+    /* Adaptação para Alto Contraste */
+    body.high-contrast .whatsapp-card,
+    body.high-contrast .material-link-card {
+      background-color: #000000;
+      border: 2px solid #ffffff;
+    }
+
+    body.high-contrast .material-icon {
+      background-color: #1e3a8a;
+      border-color: #ffffff;
+      color: #ffffff;
+    }
+
+    body.high-contrast .material-link-card:hover {
+      background-color: #121212;
+      border-color: #facc15;
+    }
+
+    body.high-contrast .btn-whatsapp {
+      background-color: #000000;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+    }
+
+    body.high-contrast .btn-whatsapp:hover {
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    body.high-contrast .faq-item {
+      background-color: #000000;
+      border: 1.5px solid #ffffff;
+    }
+
+    body.high-contrast .faq-question:hover {
+      background-color: #121212;
+    }
+
+    body.high-contrast .faq-answer {
+      border-top-color: #333333;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MOLDURA DO SMARTPHONE (390px - 420px) -->
+  <main class="mobile-viewport">
+
+    <!-- 1. BARRA DE ACESSIBILIDADE PADRÃO (OBRIGATÓRIA) -->
+    <header class="accessibility-bar" aria-label="Controles de Acessibilidade">
+      <a href="../../index.html" class="brand-link">
+        <span>Central OBI</span>
+      </a>
+      <div class="accessibility-controls">
+        <button id="btn-zoom-out" class="btn-a11y" aria-label="Diminuir tamanho da fonte">A-</button>
+        <button id="btn-zoom-in" class="btn-a11y" aria-label="Aumentar tamanho da fonte">A+</button>
+        <button id="btn-contrast" class="btn-a11y" aria-label="Ativar alto contraste">◐ Contraste</button>
+      </div>
+    </header>
+
+    <!-- 2. CABEÇALHO COM BOTÃO VOLTAR -->
+    <nav class="page-header" aria-label="Navegação da tela">
+      <a href="../tela-11-confirmacao-polo/index.html" class="btn-back">
+        <span aria-hidden="true">&larr;</span> Voltar
+      </a>
+    </nav>
+
+    <!-- 3. MIOLO DA TELA -->
+    <section class="screen-content">
+
+      <!-- Título Semântico Único -->
+      <h1 class="screen-title">Comunidade e Suporte Gratuito</h1>
+      <p class="screen-subtitle">Projeto de extensão universitária da UFABC. Aqui ninguém estuda sozinho para a OBI.</p>
+
+      <!-- Cartão com Botão de Destaque para o WhatsApp -->
+      <section class="whatsapp-card" aria-label="Grupo de Estudos">
+        <div class="community-tag">
+          <svg aria-hidden="true" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" />
+          </svg>
+          Extensão Universitária
+        </div>
+
+        <h2 class="whatsapp-card-title">Grupo de Apoio & Dúvidas Rápidas</h2>
+        <p class="whatsapp-card-desc">Tire dúvidas sobre exercícios, receba lembretes das aulas e converse diretamente com monitores da UFABC.</p>
+
+        <a href="https://chat.whatsapp.com/demo-obi-ufabc" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" aria-label="Entrar no Grupo de Apoio no WhatsApp da UFABC (abre em nova aba)">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm5.78 14.07c-.24.68-1.39 1.3-1.92 1.38-.49.08-1.12.11-3.6-0.92-3.17-1.31-5.21-4.52-5.37-4.73-.16-.21-1.29-1.72-1.29-3.28s.82-2.33 1.11-2.65c.29-.32.64-.4 0.86-.4.21 0 .43 0 .61.01.2 0 .46-.07.72.55.27.63.92 2.25 1 2.42.08.16.14.36.03.57-.11.22-.16.35-.32.55-.16.2-.34.45-.49.6-.16.16-.33.34-.14.67.19.33.85 1.4 1.82 2.26 1.25 1.11 2.3 1.46 2.63 1.62.33.16.52.14.72-.08.2-.23.86-1 1.09-1.35.23-.35.46-.29.77-.18.32.11 2.01.95 2.36 1.12.35.17.58.26.66.4.08.14.08.83-.16 1.51z"/>
+          </svg>
+          <span>Entrar no Grupo de Apoio no WhatsApp</span>
+        </a>
+
+        <div class="trust-badge">
+          <svg aria-hidden="true" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <span>Ambiente moderado por docentes e monitores da UFABC. Sem spam.</span>
+        </div>
+      </section>
+
+      <!-- Nova Seção: Materiais Gratuitos de Treino (Links Reais UNICAMP) -->
+      <section class="materials-section" aria-label="Materiais Gratuitos de Treino">
+        <h2 class="section-header-title">
+          <svg aria-hidden="true" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--cor-primaria);">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          Materiais Gratuitos de Treino
+        </h2>
+        <p class="section-header-desc">Pratique hoje mesmo com o acervo oficial mantido pela coordenação nacional da OBI na UNICAMP:</p>
+
+        <div class="materials-list">
+          <a href="https://olimpiada.ic.unicamp.br/pratique/" target="_blank" rel="noopener noreferrer" class="material-link-card" aria-label="Provas e Gabaritos Oficiais da OBI pela UNICAMP (abre em nova aba)">
+            <div class="material-icon" aria-hidden="true">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div class="material-info">
+              <strong>Provas e Gabaritos Oficiais da OBI</strong>
+              <span>Cadernos de fases anteriores com soluções explicadas pela UNICAMP.</span>
+            </div>
+            <svg class="external-icon" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+
+          <a href="https://olimpiada.ic.unicamp.br/estude/" target="_blank" rel="noopener noreferrer" class="material-link-card" aria-label="Apostilas e Aulas de Programação da OBI (abre em nova aba)">
+            <div class="material-icon" aria-hidden="true">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div class="material-info">
+              <strong>Apostilas e Aulas de Programação</strong>
+              <span>Conteúdo didático gratuito de lógica e algoritmos para iniciantes.</span>
+            </div>
+            <svg class="external-icon" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- Seção de Dúvidas Frequentes (FAQ) com <details> e <summary> Semânticos -->
+      <section class="faq-section" aria-label="Perguntas Frequentes">
+        <h2 class="section-header-title">
+          <svg aria-hidden="true" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--cor-primaria);">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Dúvidas Frequentes
+        </h2>
+
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>Preciso pagar alguma taxa para participar?</span>
+              <svg class="faq-chevron" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              <p>Não! A inscrição na OBI e todas as atividades da UFABC são 100% gratuitas para estudantes da rede pública e privada.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>E se eu nunca tiver programado antes?</span>
+              <svg class="faq-chevron" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              <p>Sem problemas! Nossos monitores ensinam desde o início com desafios intuitivos de lógica, mesmo que você não saiba código.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>Como funcionam os treinos aos sábados?</span>
+              <svg class="faq-chevron" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              <p>São encontros descontraídos de 9h às 12h no Campus Santo André ou online pelo celular/computador com aulas gravadas.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-question">
+              <span>Quem organiza os treinos e o suporte?</span>
+              <svg class="faq-chevron" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div class="faq-answer">
+              <p>O projeto é conduzido por estudantes voluntários e docentes dos cursos de Computação da UFABC em prol da educação pública.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- Ações no Rodapé da Tela -->
+      <div class="screen-actions">
+        <a href="../../index.html" class="btn-secondary">
+          Voltar ao Início (Hub Central)
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>

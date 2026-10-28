@@ -80,3 +80,35 @@ O fluxo principal do protótipo é composto por sete telas encadeadas que guiam 
   - Seção com links diretos para os **Materiais Gratuitos de Treino Oficiais** da UNICAMP (provas anteriores com gabarito e apostilas didáticas de programação).
   - Seção de Dúvidas Frequentes (FAQ) nativa em HTML5 semântico com `<details>` e `<summary>`, focando em respostas de até duas linhas e navegação por teclado.
   - Botão de retorno ao Hub Central.
+
+---
+
+## 5. Módulo de Editais e Apoio ao Monitor (Telas 04 e 05)
+
+As duas telas formam um par navegável por abas (`<nav aria-label="Seções da Central OBI">`, com `aria-current="page"` na aba ativa). Ambas seguem a moldura mobile, a barra de acessibilidade padrão (`[ A- | A+ ]` e `[ ◐ Contraste ]`) e o rodapé de privacidade. Não coletam nem gravam dados do usuário: o texto digitado na Tela 05 não é salvo.
+
+### Tela 04 (`telas/tela-04-editais/index.html`): Editais Simplificados
+- **Objetivo**: ajudar o estudante a descobrir sua categoria/modalidade e o que levar no dia da prova, em linguagem simples.
+- **Conteúdo**:
+  - Categoria por etapa de ensino: Fundamental → Iniciação (Júnior, Nível 1 ou 2); Médio/Técnico → Programação Nível 1 ou 2 (Sênior no 4º ano do Técnico); Graduação → Programação Sênior.
+  - Regras básicas: material permitido (lápis, caneta ou lapiseira, borracha, régua e papel de rascunho), proibido (calculadora) e linguagens da Programação (C, C++, Java e Python).
+  - Itens que o regulamento não cita (celular, relógio inteligente, anotações, garrafa de água) aparecem sinalizados como **"a confirmar"** com a coordenação da escola.
+- **Transparência**: data de conferência do resumo e botão para o regulamento oficial da OBI (não foi localizado PDF oficial do edital).
+- **Rodapé**: aviso de privacidade, link "Reportar erro ou dúvida" (leva à Tela 12) e link para o site oficial da OBI.
+- **IHC/Acessibilidade**: `<h1>` oculto visualmente (`sr-only`) e títulos de seção em `<h2>`; emojis apenas decorativos (`aria-hidden="true"`); links externos com aviso de nova aba; alvos de toque de 48px ou mais; adaptação ao alto contraste.
+
+### Tela 05 (`telas/tela-05-kit-monitor/index.html`): Kit do Monitor / Professor
+- **Objetivo**: oferecer mensagens prontas para voluntários e professores copiarem e enviarem em grupos de WhatsApp ou Discord.
+- **Cartões**:
+  1. **Aviso: data da Fase 1**: o monitor preenche a data oficial num campo e a mensagem é atualizada na hora. Sem data, a cópia é bloqueada, o campo recebe `aria-invalid` e o foco. A data não vem pré-preenchida porque a Fase 1 de 2026 já ocorreu e a data da próxima edição ainda não está publicada.
+  2. **Links e exercícios de treino**: lista `LINKS_DE_TREINO` no script, com apenas links oficiais verificados (para incluir outro, basta acrescentar um item).
+  3. **Guia: qual é minha categoria?**: link para o diagnóstico (Tela 06); o endereço completo é calculado pelo navegador.
+- **Cópia**: função `copiarTexto()` usa a Clipboard API e, se falhar, `document.execCommand('copy')`. Se as duas falharem, o texto aparece selecionado numa caixa para cópia manual e **nenhum sucesso é anunciado**.
+- **Feedback**: cada cartão tem `role="status"` com `aria-live="polite"`; o botão mostra "Copiado!" por 2,5 s apenas quando a cópia realmente ocorreu.
+- **Teclado**: botões nativos (`<button>`), acionáveis por Enter e Espaço, com foco visível.
+
+### Pendências de confirmação (Telas 04 e 05)
+- Data da Fase 1 da próxima edição da OBI.
+- Regras sobre celular, relógio inteligente, anotações e garrafa de água.
+- Link oficial em PDF do edital, se existir.
+- Outros links de treino (por exemplo, Neps Academy e Beecrowd) ainda não verificados.

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kit do Monitor / Professor · Central OBI UFABC</title>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <script src="../../assets/js/utils.js" defer></script>
+  <style>
+    /* Estilos compartilhados entre as Telas 04 e 05 (cabeçalho, abas, cartões e rodapé) */
+    /* Estilos compartilhados pelas Telas 04 (Editais) e 05 (Kit do Monitor):
+       título do app, abas de navegação, cartões, títulos de seção e rodapé.
+       Depende de tokens.css e base.css. Não altera nenhum estilo global. */
+
+    /* Cabeçalho: botão Voltar + título central do app */
+    .central-header {
+      padding: 8px 16px;
+      background-color: var(--cor-card);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .central-header .btn-back {
+      border: none;
+      background: transparent;
+      color: var(--cor-primaria);
+      padding: 6px 4px;
+    }
+
+    .central-header .btn-back:hover {
+      background: transparent;
+      text-decoration: underline;
+    }
+
+    .central-title {
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--cor-texto-principal);
+      line-height: 1.2;
+    }
+
+    /* Espaçador com a mesma largura do botão Voltar para centralizar o título */
+    .central-header-spacer {
+      min-width: var(--alvo-toque-minimo);
+    }
+
+    /* Abas (links entre as telas 04 e 05) */
+    .central-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--cor-borda);
+      border-bottom: 1px solid var(--cor-borda);
+      background-color: var(--cor-fundo-suave);
+    }
+
+    .central-tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: var(--alvo-toque-minimo);
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-decoration: none;
+      color: var(--cor-texto-secundario);
+      background-color: var(--cor-fundo-suave);
+      border-bottom: 4px solid var(--cor-borda);
+    }
+
+    .central-tab:hover {
+      color: var(--cor-primaria);
+    }
+
+    .central-tab[aria-current="page"] {
+      color: var(--cor-primaria);
+      background-color: var(--cor-card);
+      border-bottom-color: var(--cor-primaria);
+    }
+
+    .central-tab:focus-visible {
+      outline-offset: -4px;
+    }
+
+    /* Conteúdo e títulos de seção */
+    .central-content {
+      background-color: var(--cor-fundo-suave);
+      gap: 22px;
+    }
+
+    .central-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      color: var(--cor-texto-principal);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .central-card {
+      background-color: var(--cor-card);
+      border: 1px solid var(--cor-borda);
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+      padding: 16px;
+    }
+
+    /* Aviso de conteúdo pendente de confirmação */
+    .aviso-pendente {
+      background-color: #fef3c7;
+      color: #78350f;
+      border: 1px solid #fde68a;
+      border-radius: var(--raio-botao);
+      padding: 10px 12px;
+      font-size: var(--tamanho-pequeno);
+      line-height: 1.4;
+    }
+
+    /* Rodapé compartilhado */
+    .central-footer {
+      margin-top: auto;
+      padding-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: var(--cor-texto-secundario);
+    }
+
+    .central-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 4px 12px;
+    }
+
+    .central-footer a {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--alvo-toque-minimo);
+      color: var(--cor-texto-principal);
+      text-decoration: underline;
+    }
+
+    .central-footer a:hover {
+      color: var(--cor-primaria);
+    }
+
+    /* Texto somente para leitores de tela */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Alto contraste */
+    body.high-contrast .central-header,
+    body.high-contrast .central-content {
+      background-color: #000000;
+    }
+
+    body.high-contrast .central-tabs,
+    body.high-contrast .central-tab {
+      background-color: #000000;
+      border-color: #ffffff;
+    }
+
+    body.high-contrast .central-tab {
+      color: #ffffff;
+      border-bottom-color: #555555;
+    }
+
+    body.high-contrast .central-tab[aria-current="page"] {
+      color: #facc15;
+      border-bottom-color: #facc15;
+    }
+
+    body.high-contrast .central-card {
+      background-color: #000000;
+      border: 2px solid #ffffff;
+      box-shadow: none;
+    }
+
+    body.high-contrast .aviso-pendente {
+      background-color: #000000;
+      color: #facc15;
+      border-color: #facc15;
+    }
+
+    body.high-contrast .central-footer a,
+    body.high-contrast .central-header .btn-back {
+      color: #ffffff;
+    }
+
+    /* Telas estreitas */
+    @media (max-width: 360px) {
+      .central-tab { font-size: 0.8rem; }
+      .central-title { font-size: 0.95rem; }
+    }
+
+    /* Estilos específicos da Tela 05 */
+    .kit-intro-titulo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    .kit-intro-texto {
+      font-size: 0.95rem;
+      color: var(--cor-texto-secundario);
+      line-height: 1.45;
+    }
+
+    .kit-lista {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .kit-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .kit-card-titulo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.3;
+    }
+
+    .kit-mensagem {
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .kit-mensagem a {
+      color: var(--cor-primaria);
+      text-decoration: underline;
+    }
+
+    .kit-campo {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kit-campo label {
+      font-size: var(--tamanho-pequeno);
+      font-weight: 700;
+    }
+
+    .kit-campo input {
+      min-height: var(--alvo-toque-minimo);
+      padding: 8px 12px;
+      font: inherit;
+      color: var(--cor-texto-principal);
+      background-color: var(--cor-card);
+      border: 1.5px solid var(--cor-borda);
+      border-radius: var(--raio-botao);
+    }
+
+    .kit-campo input[aria-invalid="true"] {
+      border-color: #b91c1c;
+    }
+
+    .kit-ajuda {
+      font-size: 0.8rem;
+      color: var(--cor-texto-secundario);
+    }
+
+    .btn-copiar {
+      gap: 8px;
+    }
+
+    .btn-copiar.copiado {
+      background-color: var(--cor-sucesso);
+    }
+
+    .kit-status {
+      min-height: 1.2em;
+      font-size: var(--tamanho-pequeno);
+      font-weight: 600;
+      color: var(--cor-sucesso);
+    }
+
+    .kit-status.erro {
+      color: #b91c1c;
+    }
+
+    .kit-manual {
+      width: 100%;
+      min-height: 110px;
+      padding: 10px;
+      font: inherit;
+      font-size: 0.9rem;
+      color: var(--cor-texto-principal);
+      background-color: var(--cor-fundo-suave);
+      border: 1.5px solid var(--cor-primaria);
+      border-radius: var(--raio-botao);
+      resize: vertical;
+    }
+
+    .kit-manual[hidden] {
+      display: none;
+    }
+
+    body.high-contrast .kit-campo input,
+    body.high-contrast .kit-manual {
+      background-color: #000000;
+      color: #ffffff;
+      border-color: #ffffff;
+    }
+
+    body.high-contrast .kit-mensagem a {
+      color: #60a5fa;
+    }
+
+    body.high-contrast .btn-copiar {
+      background-color: #000000;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+    }
+
+    body.high-contrast .btn-copiar:hover,
+    body.high-contrast .btn-copiar.copiado {
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    body.high-contrast .kit-status {
+      color: #86efac;
+    }
+
+    body.high-contrast .kit-status.erro {
+      color: #fca5a5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MOLDURA DO SMARTPHONE (390px - 420px) -->
+  <main class="mobile-viewport">
+
+    <!-- 1. BARRA DE ACESSIBILIDADE PADRÃO (OBRIGATÓRIA) -->
+    <header class="accessibility-bar" aria-label="Controles de Acessibilidade">
+      <a href="../../index.html" class="brand-link">
+        <span>Central OBI</span>
+      </a>
+      <div class="accessibility-controls">
+        <button id="btn-zoom-out" class="btn-a11y" aria-label="Diminuir tamanho da fonte">A-</button>
+        <button id="btn-zoom-in" class="btn-a11y" aria-label="Aumentar tamanho da fonte">A+</button>
+        <button id="btn-contrast" class="btn-a11y" aria-label="Ativar alto contraste">◐ Contraste</button>
+      </div>
+    </header>
+
+    <!-- 2. CABEÇALHO: VOLTAR + TÍTULO DO APP -->
+    <div class="central-header">
+      <a href="../../index.html" class="btn-back">
+        <span aria-hidden="true">&lsaquo;</span> Voltar
+      </a>
+      <p class="central-title">Central OBI UFABC</p>
+      <span class="central-header-spacer" aria-hidden="true"></span>
+    </div>
+
+    <!-- 3. ABAS: NAVEGAÇÃO ENTRE TELA 04 E TELA 05 -->
+    <nav class="central-tabs" aria-label="Seções da Central OBI">
+      <a href="../tela-04-editais/index.html" class="central-tab">
+        <span aria-hidden="true">📖</span> Editais Simplificados
+      </a>
+      <a href="../tela-05-kit-monitor/index.html" class="central-tab" aria-current="page">
+        <span aria-hidden="true">🎒</span> Kit do Monitor
+      </a>
+    </nav>
+
+    <!-- 4. MIOLO DA TELA -->
+    <div class="screen-content central-content">
+
+      <header>
+        <h1 class="kit-intro-titulo"><span aria-hidden="true">🎒</span> Kit do Monitor / Professor</h1>
+        <p class="kit-intro-texto">Materiais de apoio prontos para voluntários e professores. Toque para copiar e enviar nos grupos de WhatsApp ou Discord!</p>
+      </header>
+
+      <ul class="kit-lista">
+
+        <!-- Cartão 1: Aviso da Fase 1 -->
+        <li>
+          <section class="central-card kit-card" aria-labelledby="titulo-aviso">
+            <h2 id="titulo-aviso" class="kit-card-titulo"><span aria-hidden="true">📣</span> Aviso: data da Fase 1</h2>
+
+            <p class="aviso-pendente">
+              <strong>Data a confirmar:</strong> a Fase 1 da OBI 2026 já aconteceu (27 a 29/05 na Iniciação e 10 a 12/06 na Programação). Preencha abaixo com a data oficial da próxima prova, conferida no calendário da OBI.
+            </p>
+
+            <div class="kit-campo">
+              <label for="campo-data-fase1">Data da Fase 1</label>
+              <input type="text" id="campo-data-fase1" inputmode="text" autocomplete="off"
+                     placeholder="Ex.: 27/05 (quarta-feira)" aria-describedby="ajuda-data-fase1">
+              <span id="ajuda-data-fase1" class="kit-ajuda">
+                Consulte as datas em
+                <a href="https://olimpiada.ic.unicamp.br/calendario/datas_importantes" target="_blank" rel="noopener noreferrer">olimpiada.ic.unicamp.br<span class="sr-only"> (abre em nova aba)</span></a>.
+              </span>
+            </div>
+
+            <p id="mensagem-aviso" class="kit-mensagem"></p>
+            <textarea id="manual-aviso" class="kit-manual" readonly hidden aria-label="Texto do aviso para copiar manualmente"></textarea>
+
+            <button type="button" class="btn-primary btn-copiar" data-copiar="aviso">
+              <span aria-hidden="true">📋</span> <span class="btn-copiar-texto">Copiar aviso para WhatsApp</span>
+            </button>
+            <p class="kit-status" id="status-aviso" role="status" aria-live="polite"></p>
+          </section>
+        </li>
+
+        <!-- Cartão 2: Links e exercícios de treino -->
+        <li>
+          <section class="central-card kit-card" aria-labelledby="titulo-treino">
+            <h2 id="titulo-treino" class="kit-card-titulo"><span aria-hidden="true">💻</span> Links e exercícios de treino</h2>
+
+            <p id="mensagem-treino" class="kit-mensagem"></p>
+            <textarea id="manual-treino" class="kit-manual" readonly hidden aria-label="Links de treino para copiar manualmente"></textarea>
+
+            <button type="button" class="btn-primary btn-copiar" data-copiar="treino">
+              <span aria-hidden="true">📋</span> <span class="btn-copiar-texto">Copiar links de treino</span>
+            </button>
+            <p class="kit-status" id="status-treino" role="status" aria-live="polite"></p>
+          </section>
+        </li>
+
+        <!-- Cartão 3: Guia de categoria -->
+        <li>
+          <section class="central-card kit-card" aria-labelledby="titulo-guia">
+            <h2 id="titulo-guia" class="kit-card-titulo"><span aria-hidden="true">📄</span> Guia: qual é minha categoria?</h2>
+
+            <p id="mensagem-guia" class="kit-mensagem"></p>
+            <textarea id="manual-guia" class="kit-manual" readonly hidden aria-label="Link do guia para copiar manualmente"></textarea>
+
+            <!-- Link relativo: o endereço completo é calculado pelo JavaScript -->
+            <a id="link-guia" href="../tela-06-quiz-pergunta-1/index.html" class="btn-secondary">Abrir o diagnóstico de categoria</a>
+
+            <button type="button" class="btn-primary btn-copiar" data-copiar="guia">
+              <span aria-hidden="true">📋</span> <span class="btn-copiar-texto">Copiar link do guia</span>
+            </button>
+            <p class="kit-status" id="status-guia" role="status" aria-live="polite"></p>
+          </section>
+        </li>
+
+      </ul>
+
+      <!-- Rodapé -->
+      <footer class="central-footer">
+        <p><span aria-hidden="true">🛡️</span> Privacidade: nenhum dado de alunos ou professores é enviado ou monitorado. O texto digitado aqui não é salvo.</p>
+        <div class="central-footer-links">
+          <a href="../tela-12-comunidade-extensao/index.html">Reportar erro ou dúvida no edital</a>
+          <a href="https://olimpiada.ic.unicamp.br/" target="_blank" rel="noopener noreferrer"
+             aria-label="Site oficial da OBI (abre em nova aba)">Site oficial OBI <span aria-hidden="true">&nearr;</span></a>
+        </div>
+      </footer>
+
+    </div>
+
+  </main>
+
+  <script>
+    /* Tela 05 · Kit do Monitor: mensagens prontas e botões de cópia.
+       Cada mensagem é montada por uma função; o mesmo texto é exibido e copiado. */
+
+    var URL_CALENDARIO_OBI = 'https://olimpiada.ic.unicamp.br/calendario/datas_importantes';
+
+    // Links de treino verificados no site oficial da OBI. Para incluir outro, basta adicionar um item.
+    var LINKS_DE_TREINO = [
+      { nome: 'Provas anteriores da OBI, com correção automática', url: 'https://olimpiada.ic.unicamp.br/pratique/' }
+    ];
+
+    function montarMensagemAviso() {
+      var campo = document.getElementById('campo-data-fase1');
+      var data = campo ? campo.value.trim() : '';
+      var textoData = data || '[preencha a data]';
+      return '⚠️ Atenção, turma! A Fase 1 da OBI está chegando.\n' +
+             'A prova será em ' + textoData + '.\n' +
+             'Confirmem a inscrição com a sua escola.\n' +
+             'Calendário oficial: ' + URL_CALENDARIO_OBI;
+    }
+
+    function montarMensagemTreino() {
+      var linhas = ['📚 Pessoal, aqui estão os links para praticar algoritmos:'];
+      LINKS_DE_TREINO.forEach(function (item) {
+        linhas.push('• ' + item.nome + ': ' + item.url);
+      });
+      linhas.push('Não deixem de treinar um pouquinho toda semana!');
+      return linhas.join('\n');
+    }
+
+    function obterUrlDoGuia() {
+      // a propriedade href de um link devolve o endereço completo já resolvido
+      return document.getElementById('link-guia').href;
+    }
+
+    function montarMensagemGuia() {
+      return '🤔 Está em dúvida se sua categoria é Iniciação ou Programação?\n' +
+             'Faça o diagnóstico rápido da Central OBI UFABC:\n' +
+             obterUrlDoGuia();
+    }
+
+    var MENSAGENS = {
+      aviso: montarMensagemAviso,
+      treino: montarMensagemTreino,
+      guia: montarMensagemGuia
+    };
+
+    // Mostra o texto no cartão, transformando endereços http(s) em links clicáveis
+    function exibirMensagem(idElemento, texto) {
+      var elemento = document.getElementById(idElemento);
+      elemento.textContent = '';
+      texto.split(/(https?:\/\/[^\s]+)/g).forEach(function (parte) {
+        if (/^https?:\/\//.test(parte)) {
+          var link = document.createElement('a');
+          link.href = parte;
+          link.textContent = parte;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          elemento.appendChild(link);
+        } else {
+          elemento.appendChild(document.createTextNode(parte));
+        }
+      });
+    }
+
+    function atualizarMensagens() {
+      exibirMensagem('mensagem-aviso', montarMensagemAviso());
+      exibirMensagem('mensagem-treino', montarMensagemTreino());
+      exibirMensagem('mensagem-guia', montarMensagemGuia());
+    }
+
+    // Copia o texto. Devolve uma Promise que resolve com true (copiou) ou false (falhou).
+    function copiarTexto(texto) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(texto).then(
+          function () { return true; },
+          function () { return copiarComFallback(texto); }
+        );
+      }
+      return Promise.resolve(copiarComFallback(texto));
+    }
+
+    function copiarComFallback(texto) {
+      var areaTemporaria = document.createElement('textarea');
+      areaTemporaria.value = texto;
+      areaTemporaria.setAttribute('readonly', '');
+      areaTemporaria.style.position = 'fixed';
+      areaTemporaria.style.left = '-9999px';
+      document.body.appendChild(areaTemporaria);
+      areaTemporaria.select();
+      var copiou = false;
+      try {
+        copiou = document.execCommand('copy');
+      } catch (erro) {
+        copiou = false;
+      }
+      document.body.removeChild(areaTemporaria);
+      return copiou;
+    }
+
+    var temporizadores = {};
+
+    function mostrarStatus(chave, mensagem, ehErro) {
+      var status = document.getElementById('status-' + chave);
+      status.textContent = mensagem;
+      status.classList.toggle('erro', !!ehErro);
+      clearTimeout(temporizadores[chave]);
+      if (!ehErro) {
+        temporizadores[chave] = setTimeout(function () { status.textContent = ''; }, 3000);
+      }
+    }
+
+    function restaurarBotao(botao) {
+      var rotulo = botao.querySelector('.btn-copiar-texto');
+      if (botao.dataset.rotuloOriginal) rotulo.textContent = botao.dataset.rotuloOriginal;
+      botao.classList.remove('copiado');
+    }
+
+    function aoCopiarComSucesso(botao, chave) {
+      var rotulo = botao.querySelector('.btn-copiar-texto');
+      if (!botao.dataset.rotuloOriginal) botao.dataset.rotuloOriginal = rotulo.textContent;
+      botao.classList.add('copiado');
+      rotulo.textContent = 'Copiado!';
+      mostrarStatus(chave, 'Texto copiado! Agora é só colar no grupo.', false);
+      clearTimeout(botao.temporizadorRotulo);
+      botao.temporizadorRotulo = setTimeout(function () { restaurarBotao(botao); }, 2500);
+    }
+
+    // Se a cópia automática falhar, mostra o texto selecionado para copiar manualmente
+    function oferecerCopiaManual(chave, texto) {
+      var area = document.getElementById('manual-' + chave);
+      area.value = texto;
+      area.hidden = false;
+      area.focus();
+      area.select();
+      mostrarStatus(chave, 'Não foi possível copiar automaticamente. O texto está selecionado: use Ctrl+C (ou "Copiar" no menu do celular).', true);
+    }
+
+    function aoClicarEmCopiar(botao) {
+      var chave = botao.getAttribute('data-copiar');
+
+      if (chave === 'aviso') {
+        var campo = document.getElementById('campo-data-fase1');
+        if (!campo.value.trim()) {
+          campo.setAttribute('aria-invalid', 'true');
+          mostrarStatus('aviso', 'Preencha a data da Fase 1 antes de copiar o aviso.', true);
+          campo.focus();
+          return;
+        }
+        campo.removeAttribute('aria-invalid');
+      }
+
+      var texto = MENSAGENS[chave]();
+      copiarTexto(texto).then(function (copiou) {
+        if (copiou) {
+          document.getElementById('manual-' + chave).hidden = true;
+          aoCopiarComSucesso(botao, chave);
+        } else {
+          clearTimeout(botao.temporizadorRotulo);
+          restaurarBotao(botao);
+          oferecerCopiaManual(chave, texto);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      atualizarMensagens();
+
+      document.getElementById('campo-data-fase1').addEventListener('input', function (evento) {
+        evento.target.removeAttribute('aria-invalid');
+        document.getElementById('status-aviso').textContent = '';
+        exibirMensagem('mensagem-aviso', montarMensagemAviso());
+      });
+
+      document.querySelectorAll('[data-copiar]').forEach(function (botao) {
+        botao.addEventListener('click', function () { aoClicarEmCopiar(botao); });
+      });
+    });
+  </script>
+
+</body>
+</html>

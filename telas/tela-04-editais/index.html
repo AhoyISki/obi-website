@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editais Simplificados · Central OBI UFABC</title>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <script src="../../assets/js/utils.js" defer></script>
+  <style>
+    /* Estilos compartilhados entre as Telas 04 e 05 (cabeçalho, abas, cartões e rodapé) */
+    /* Estilos compartilhados pelas Telas 04 (Editais) e 05 (Kit do Monitor):
+       título do app, abas de navegação, cartões, títulos de seção e rodapé.
+       Depende de tokens.css e base.css. Não altera nenhum estilo global. */
+
+    /* Cabeçalho: botão Voltar + título central do app */
+    .central-header {
+      padding: 8px 16px;
+      background-color: var(--cor-card);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .central-header .btn-back {
+      border: none;
+      background: transparent;
+      color: var(--cor-primaria);
+      padding: 6px 4px;
+    }
+
+    .central-header .btn-back:hover {
+      background: transparent;
+      text-decoration: underline;
+    }
+
+    .central-title {
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--cor-texto-principal);
+      line-height: 1.2;
+    }
+
+    /* Espaçador com a mesma largura do botão Voltar para centralizar o título */
+    .central-header-spacer {
+      min-width: var(--alvo-toque-minimo);
+    }
+
+    /* Abas (links entre as telas 04 e 05) */
+    .central-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--cor-borda);
+      border-bottom: 1px solid var(--cor-borda);
+      background-color: var(--cor-fundo-suave);
+    }
+
+    .central-tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: var(--alvo-toque-minimo);
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-decoration: none;
+      color: var(--cor-texto-secundario);
+      background-color: var(--cor-fundo-suave);
+      border-bottom: 4px solid var(--cor-borda);
+    }
+
+    .central-tab:hover {
+      color: var(--cor-primaria);
+    }
+
+    .central-tab[aria-current="page"] {
+      color: var(--cor-primaria);
+      background-color: var(--cor-card);
+      border-bottom-color: var(--cor-primaria);
+    }
+
+    .central-tab:focus-visible {
+      outline-offset: -4px;
+    }
+
+    /* Conteúdo e títulos de seção */
+    .central-content {
+      background-color: var(--cor-fundo-suave);
+      gap: 22px;
+    }
+
+    .central-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      color: var(--cor-texto-principal);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .central-card {
+      background-color: var(--cor-card);
+      border: 1px solid var(--cor-borda);
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+      padding: 16px;
+    }
+
+    /* Aviso de conteúdo pendente de confirmação */
+    .aviso-pendente {
+      background-color: #fef3c7;
+      color: #78350f;
+      border: 1px solid #fde68a;
+      border-radius: var(--raio-botao);
+      padding: 10px 12px;
+      font-size: var(--tamanho-pequeno);
+      line-height: 1.4;
+    }
+
+    /* Rodapé compartilhado */
+    .central-footer {
+      margin-top: auto;
+      padding-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: var(--cor-texto-secundario);
+    }
+
+    .central-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 4px 12px;
+    }
+
+    .central-footer a {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--alvo-toque-minimo);
+      color: var(--cor-texto-principal);
+      text-decoration: underline;
+    }
+
+    .central-footer a:hover {
+      color: var(--cor-primaria);
+    }
+
+    /* Texto somente para leitores de tela */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Alto contraste */
+    body.high-contrast .central-header,
+    body.high-contrast .central-content {
+      background-color: #000000;
+    }
+
+    body.high-contrast .central-tabs,
+    body.high-contrast .central-tab {
+      background-color: #000000;
+      border-color: #ffffff;
+    }
+
+    body.high-contrast .central-tab {
+      color: #ffffff;
+      border-bottom-color: #555555;
+    }
+
+    body.high-contrast .central-tab[aria-current="page"] {
+      color: #facc15;
+      border-bottom-color: #facc15;
+    }
+
+    body.high-contrast .central-card {
+      background-color: #000000;
+      border: 2px solid #ffffff;
+      box-shadow: none;
+    }
+
+    body.high-contrast .aviso-pendente {
+      background-color: #000000;
+      color: #facc15;
+      border-color: #facc15;
+    }
+
+    body.high-contrast .central-footer a,
+    body.high-contrast .central-header .btn-back {
+      color: #ffffff;
+    }
+
+    /* Telas estreitas */
+    @media (max-width: 360px) {
+      .central-tab { font-size: 0.8rem; }
+      .central-title { font-size: 0.95rem; }
+    }
+
+    /* Estilos específicos da Tela 04 */
+    .categoria-lista,
+    .regras-lista {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .categoria-nivel {
+      font-weight: 800;
+      font-size: 1.02rem;
+      line-height: 1.35;
+    }
+
+    .categoria-modalidade {
+      display: block;
+      margin-top: 2px;
+      font-weight: 800;
+      font-size: 1.02rem;
+      color: var(--cor-primaria);
+      line-height: 1.35;
+    }
+
+    .categoria-detalhe {
+      display: block;
+      margin-top: 2px;
+      font-size: var(--tamanho-pequeno);
+      font-weight: 500;
+      color: var(--cor-texto-secundario);
+      line-height: 1.4;
+    }
+
+    .regras-lista li {
+      line-height: 1.45;
+    }
+
+    .regra-pendente {
+      display: block;
+      margin-top: 4px;
+      font-size: var(--tamanho-pequeno);
+      color: #78350f;
+      background-color: #fef3c7;
+      border-radius: 6px;
+      padding: 4px 8px;
+    }
+
+    .transparencia-texto {
+      font-size: var(--tamanho-pequeno);
+      color: var(--cor-texto-secundario);
+      margin-bottom: 12px;
+      line-height: 1.45;
+    }
+
+    .btn-edital {
+      min-height: 52px;
+      border-radius: 999px;
+      gap: 8px;
+      text-align: center;
+    }
+
+    body.high-contrast .regra-pendente {
+      background-color: #000000;
+      color: #facc15;
+      border: 1px solid #facc15;
+    }
+
+    body.high-contrast .categoria-modalidade {
+      color: #60a5fa;
+    }
+
+    body.high-contrast .btn-edital {
+      background-color: #000000;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MOLDURA DO SMARTPHONE (390px - 420px) -->
+  <main class="mobile-viewport">
+
+    <!-- 1. BARRA DE ACESSIBILIDADE PADRÃO (OBRIGATÓRIA) -->
+    <header class="accessibility-bar" aria-label="Controles de Acessibilidade">
+      <a href="../../index.html" class="brand-link">
+        <span>Central OBI</span>
+      </a>
+      <div class="accessibility-controls">
+        <button id="btn-zoom-out" class="btn-a11y" aria-label="Diminuir tamanho da fonte">A-</button>
+        <button id="btn-zoom-in" class="btn-a11y" aria-label="Aumentar tamanho da fonte">A+</button>
+        <button id="btn-contrast" class="btn-a11y" aria-label="Ativar alto contraste">◐ Contraste</button>
+      </div>
+    </header>
+
+    <!-- 2. CABEÇALHO: VOLTAR + TÍTULO DO APP -->
+    <div class="central-header">
+      <a href="../../index.html" class="btn-back">
+        <span aria-hidden="true">&lsaquo;</span> Voltar
+      </a>
+      <p class="central-title">Central OBI UFABC</p>
+      <span class="central-header-spacer" aria-hidden="true"></span>
+    </div>
+
+    <!-- 3. ABAS: NAVEGAÇÃO ENTRE TELA 04 E TELA 05 -->
+    <nav class="central-tabs" aria-label="Seções da Central OBI">
+      <a href="../tela-04-editais/index.html" class="central-tab" aria-current="page">
+        <span aria-hidden="true">📖</span> Editais Simplificados
+      </a>
+      <a href="../tela-05-kit-monitor/index.html" class="central-tab">
+        <span aria-hidden="true">🎒</span> Kit do Monitor
+      </a>
+    </nav>
+
+    <!-- 4. MIOLO DA TELA -->
+    <div class="screen-content central-content">
+
+      <h1 class="sr-only">Editais Simplificados da OBI</h1>
+
+      <!-- Categoria / modalidade -->
+      <section aria-labelledby="titulo-categoria">
+        <h2 id="titulo-categoria" class="central-section-title">
+          <span aria-hidden="true">🎯</span> Qual é a sua categoria / modalidade?
+        </h2>
+        <div class="central-card">
+          <ul class="categoria-lista">
+            <li>
+              <span class="categoria-nivel"><span aria-hidden="true">👦</span> Ensino Fundamental (até o 9º ano):</span>
+              <span class="categoria-modalidade"><span aria-hidden="true">👉</span> Iniciação Nível 1 ou 2</span>
+              <span class="categoria-detalhe">Nível 1: 6º e 7º ano · Nível 2: 8º e 9º ano · Júnior: 4º e 5º ano.</span>
+            </li>
+            <li>
+              <span class="categoria-nivel"><span aria-hidden="true">👦</span> Ensino Médio ou Técnico:</span>
+              <span class="categoria-modalidade"><span aria-hidden="true">👉</span> Programação Nível 1 ou 2</span>
+              <span class="categoria-detalhe">Nível 1: até o 1º ano do Médio · Nível 2: até o 3º ano · Sênior: 4º ano do Técnico.</span>
+            </li>
+            <li>
+              <span class="categoria-nivel"><span aria-hidden="true">🎓</span> Ensino Superior (Graduação):</span>
+              <span class="categoria-modalidade"><span aria-hidden="true">👉</span> Programação Sênior</span>
+              <span class="categoria-detalhe">Para quem está no 1º ano da graduação, pela primeira vez.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Regras básicas -->
+      <section aria-labelledby="titulo-regras">
+        <h2 id="titulo-regras" class="central-section-title">
+          <span aria-hidden="true">📋</span> Regras básicas (o que levar no dia)
+        </h2>
+        <div class="central-card">
+          <ul class="regras-lista">
+            <li>
+              <span aria-hidden="true">✅</span> <strong>Permitido:</strong> lápis, caneta ou lapiseira, borracha, régua e papel de rascunho.
+            </li>
+            <li>
+              <span aria-hidden="true">❌</span> <strong>Proibido:</strong> calculadora.
+              <span class="regra-pendente"><strong>A confirmar:</strong> celular, relógio inteligente, anotações e garrafa de água não aparecem no regulamento. Pergunte à coordenação da sua escola.</span>
+            </li>
+            <li>
+              <span aria-hidden="true">💻</span> <strong>Linguagens (Programação):</strong> C, C++, Java e Python.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Transparência -->
+      <section aria-labelledby="titulo-transparencia">
+        <h2 id="titulo-transparencia" class="central-section-title">
+          <span aria-hidden="true">🔍</span> Transparência
+        </h2>
+        <p class="transparencia-texto">
+          Resumo conferido em 28/10/2026 no regulamento da OBI 2026. Para detalhes jurídicos, consulte a fonte original:
+        </p>
+        <a href="https://olimpiada.ic.unicamp.br/info/regulamento/" target="_blank" rel="noopener noreferrer"
+           class="btn-primary btn-edital"
+           aria-label="Abrir o regulamento oficial completo da OBI (abre em nova aba)">
+          <span aria-hidden="true">🔗</span> Abrir regulamento oficial completo <span aria-hidden="true">&nearr;</span>
+        </a>
+      </section>
+
+      <!-- Rodapé -->
+      <footer class="central-footer">
+        <p><span aria-hidden="true">🛡️</span> Privacidade: nenhum dado seu é enviado ou monitorado. Só guardamos no seu navegador o tamanho da fonte e o contraste.</p>
+        <div class="central-footer-links">
+          <a href="../tela-12-comunidade-extensao/index.html">Reportar erro ou dúvida no edital</a>
+          <a href="https://olimpiada.ic.unicamp.br/" target="_blank" rel="noopener noreferrer"
+             aria-label="Site oficial da OBI (abre em nova aba)">Site oficial OBI <span aria-hidden="true">&nearr;</span></a>
+        </div>
+      </footer>
+
+    </div>
+
+  </main>
+
+</body>
+</html>
